@@ -1,12 +1,13 @@
 package com.marcnuri.demo.mockmvcinaction.web.view;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 /**
  * Resource to handle requests for typical SPA resources hosted within the web application.
- * Created by marc on 2019-02-01.
+ * Created by Marc Nuri <marc@marcnuri.com> on 2019-02-01.
  */
 @Controller
 @RequestMapping("/")
@@ -18,7 +19,7 @@ public class SpaResource {
      *
      * @see com.marcnuri.demo.mockmvcinaction.web.Configuration
      */
-    @RequestMapping(value = {
+    @GetMapping(value = {
             "",
             "/**/{path:[^\\.]*}"
     },
