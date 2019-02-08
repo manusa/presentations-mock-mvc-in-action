@@ -10,8 +10,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import java.io.IOException;
 
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -50,6 +49,7 @@ public class FileResourceTest {
 
         // Then
         result.andExpect(status().isNoContent());
+        verify(mockFileService, times(1)).saveFile(Mockito.anyString(), Mockito.any());
     }
 
 
