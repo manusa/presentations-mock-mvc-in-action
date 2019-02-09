@@ -29,7 +29,6 @@ public class FileResource {
 
     @PostMapping
     @ResponseStatus(HttpStatus.NO_CONTENT)
-
     public void insertFile(MultipartHttpServletRequest request) throws IOException {
         final MultipartFile multipartFile = request.getFile(request.getFileNames().next());
         fileService.saveFile(multipartFile.getName(), multipartFile.getInputStream());

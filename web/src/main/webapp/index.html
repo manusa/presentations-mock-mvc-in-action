@@ -9,5 +9,13 @@
     <body>
         <h1>MockMVC in Action!</h1>
         <p>Welcome</p>
+    <script>
+      (function () {
+          var baseHref = document.createElement("p");
+          baseHref.innerHTML = 'Relative path: '
+            + window.location.pathname+window.location.search + window.location.hash;
+          document.body.appendChild(baseHref);
+        })();
+    </script>
     </body>
 </html>
