@@ -49,6 +49,7 @@ public class BeerResourceTest {
   public void getBeersAsJson() throws Exception {
     // Given
     final Beer beer = new Beer();
+    beer.setId("I'm Invisible");
     beer.setName("La Östia");
     beer.setType(BeerType.KOLSCH);
     doReturn(Collections.singletonList(beer)).when(mockBeerService).getBeers();
@@ -62,6 +63,7 @@ public class BeerResourceTest {
     result.andExpect(status().isOk());
     result.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     result.andExpect(jsonPath("$").isArray());
+    result.andExpect(jsonPath("$[0].id").doesNotExist());
     result.andExpect(jsonPath("$[0].name", equalTo("La Östia")));
   }
 
@@ -69,6 +71,7 @@ public class BeerResourceTest {
   public void getBeersAsXML() throws Exception {
     // Given
     final Beer beer = new Beer();
+    beer.setId("I'm Invisible");
     beer.setName("La Östia");
     beer.setType(BeerType.KOLSCH);
     doReturn(Collections.singletonList(beer)).when(mockBeerService).getBeers();

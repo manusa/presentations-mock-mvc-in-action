@@ -5,6 +5,7 @@
  */
 package com.marcnuri.demo.mockmvcinaction.web.beer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Objects;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.keyvalue.annotation.KeySpace;
@@ -15,12 +16,26 @@ import org.springframework.data.keyvalue.annotation.KeySpace;
 @KeySpace("beers")
 public class Beer {
   @Id
+  @JsonIgnore
   private String id;
+  private String externalId;
   private String name;
   private BeerType type;
 
   public String getId() {
     return id;
+  }
+
+  public void setId(String id) {
+    this.id = id;
+  }
+
+  public String getExternalId() {
+    return externalId;
+  }
+
+  public void setExternalId(String externalId) {
+    this.externalId = externalId;
   }
 
   public String getName() {
@@ -49,6 +64,7 @@ public class Beer {
     }
     Beer beer = (Beer) o;
     return Objects.equals(id, beer.id) &&
+        Objects.equals(externalId, beer.externalId) &&
         Objects.equals(name, beer.name) &&
         type == beer.type;
   }
@@ -56,6 +72,6 @@ public class Beer {
   @Override
   public int hashCode() {
 
-    return Objects.hash(id, name, type);
+    return Objects.hash(id, externalId, name, type);
   }
 }
