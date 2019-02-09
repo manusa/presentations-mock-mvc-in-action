@@ -56,7 +56,8 @@ public class FullIntegrationTest {
         result.andExpect(status().isOk()).andExpect(forwardedUrl("/index.html"));
 
         final ResultActions redirectResult = mockMvc.perform(
-                get(result.andReturn().getResponse().getForwardedUrl()));
+                get(result.andReturn().getResponse().getForwardedUrl())
+                    .accept(MimeTypeUtils.TEXT_HTML_VALUE));
 
         redirectResult.andExpect(content().string(containsString("MockMVC in Action!")));
     }

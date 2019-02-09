@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 
 import java.util.Collections;
 import org.junit.After;
@@ -62,5 +63,24 @@ public class BeerResourceTest {
     result.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     result.andExpect(jsonPath("$").isArray());
     result.andExpect(jsonPath("$[0].name", equalTo("La Östia")));
+  }
+
+  @Test
+  public void getBeersAsXML() throws Exception {
+    // Given
+    final Beer beer = new Beer();
+    beer.setName("La Östia");
+    beer.setType(BeerType.KOLSCH);
+    doReturn(Collections.singletonList(beer)).when(mockBeerService).getBeers();
+
+    // When
+    final ResultActions result = mockMvc.perform(
+        get("/beers").accept(MediaType.APPLICATION_XML)
+    );
+
+    // Then
+    result.andExpect(status().isOk());
+    result.andExpect(content().contentType(MediaType.valueOf("application/xml;charset=UTF-8")));
+    result.andExpect(xpath("/List/item[1]/name").string(equalTo("La Östia")));
   }
 }
