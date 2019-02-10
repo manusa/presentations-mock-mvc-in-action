@@ -7,6 +7,8 @@ package com.marcnuri.demo.mockmvcinaction.web.beer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.util.Objects;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.keyvalue.annotation.KeySpace;
 
@@ -18,8 +20,12 @@ public class Beer {
   @Id
   @JsonIgnore
   private String id;
+  @NotNull
   private String externalId;
+  @NotNull
+  @Size(min = 1)
   private String name;
+  @NotNull
   private BeerType type;
 
   public String getId() {
@@ -74,4 +80,5 @@ public class Beer {
 
     return Objects.hash(id, externalId, name, type);
   }
+
 }

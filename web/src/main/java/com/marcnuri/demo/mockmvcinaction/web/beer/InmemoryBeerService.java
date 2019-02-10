@@ -29,7 +29,7 @@ public class InmemoryBeerService implements BeerService {
   }
 
   @Override
-  public Beer insertBear(Beer beerToInsert) {
+  public Beer insertBeer(Beer beerToInsert) {
     return beerRepository.save(beerToInsert);
   }
 }

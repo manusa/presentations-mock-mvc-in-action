@@ -6,8 +6,10 @@
 package com.marcnuri.demo.mockmvcinaction.web.beer;
 
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -85,5 +87,47 @@ public class BeerResourceTest {
     result.andExpect(status().isOk());
     result.andExpect(content().contentType(MediaType.valueOf("application/xml;charset=UTF-8")));
     result.andExpect(xpath("/List/item[1]/name").string(equalTo("La Östia")));
+  }
+
+  @Test
+  public void insertBeer_validBeer_shouldReturnCreated() throws Exception {
+    // Given
+    doAnswer(a -> {
+      final Beer b = a.getArgument(0);
+      b.setId("1337");
+      return b;
+    }).when(mockBeerService).insertBeer(Mockito.any(Beer.class));
+
+    // When
+    final ResultActions result = mockMvc.perform(
+        post("/beers")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"name\":\"Östia\",\"externalId\":\"OST.1\",\"type\":\"KOLSCH\"}")
+            .accept(MediaType.APPLICATION_JSON)
+    );
+
+    // Then
+    result.andExpect(status().isCreated());
+    result.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    result.andExpect(jsonPath("$.id").doesNotExist());
+    result.andExpect(jsonPath("$.name", equalTo("Östia")));
+    result.andExpect(jsonPath("$.externalId", equalTo("OST.1")));
+    result.andExpect(jsonPath("$.type", equalTo("KOLSCH")));
+  }
+
+  @Test
+  public void insertBeer_invalidBeer_shouldReturnBadRequest() throws Exception {
+    // Given
+
+    // When
+    final ResultActions result = mockMvc.perform(
+        post("/beers")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"name\":\"Östia\",\"externalId\":\"OST.1\"}")
+            .accept(MediaType.APPLICATION_JSON)
+    );
+
+    // Then
+    result.andExpect(status().isBadRequest());
   }
 }

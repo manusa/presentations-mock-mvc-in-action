@@ -24,6 +24,6 @@ interface BeerService {
    *
    * @return the newly inserted beer
    */
-  Beer insertBear(Beer beerToInsert);
+  Beer insertBeer(Beer beerToInsert);
 
 }
