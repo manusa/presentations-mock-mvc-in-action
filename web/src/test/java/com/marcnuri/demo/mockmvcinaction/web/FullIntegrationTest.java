@@ -36,7 +36,6 @@ public class FullIntegrationTest {
         mockMvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .build();
-
     }
 
     @After
@@ -45,8 +44,10 @@ public class FullIntegrationTest {
     }
 
     @Test
+    @SuppressWarnings("ConstantConditions")
     public void forwardToIndex_validUrlAndHeaders_shouldReturnOkAndRedirectToContent() throws Exception {
         // Given
+        // Real application context
 
         // When
         final ResultActions result = mockMvc.perform(get("/")

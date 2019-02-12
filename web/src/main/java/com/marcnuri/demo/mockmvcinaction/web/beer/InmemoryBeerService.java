@@ -18,8 +18,6 @@ import java.util.stream.StreamSupport;
 @Service
 public class InmemoryBeerService implements BeerService {
 
-  private static final String CET_ZONE_ID = "CET";
-
   private final BeerRepository beerRepository;
 
   public InmemoryBeerService(BeerRepository beerRepository) {
@@ -34,7 +32,7 @@ public class InmemoryBeerService implements BeerService {
 
   @Override
   public Beer insertBeer(Beer beerToInsert) {
-    beerToInsert.setLastModified(LocalDateTime.now()/*.atZone(ZoneId.of(CET_ZONE_ID))*/);
+    beerToInsert.setLastModified(LocalDateTime.now());
     return beerRepository.save(beerToInsert);
   }
 }
