@@ -40,7 +40,32 @@ public class SpaResourceTest {
                         .accept(MimeTypeUtils.TEXT_HTML_VALUE));
 
         // Then
-        result.andExpect(status().isOk()).andExpect(forwardedUrl("/index.html"));
+        result.andExpect(status().isOk());
+        result.andExpect(forwardedUrl("/index.html"));
     }
 
+    @Test
+    public void forwardToIndex_validUrlHierarchyAndHeaders_shouldReturnOk() throws Exception {
+        // Given
+
+        // When
+        final ResultActions result = mockMvc.perform(get("/this/is/a/front-end/route")
+                .accept(MimeTypeUtils.TEXT_HTML_VALUE));
+
+        // Then
+        result.andExpect(status().isOk());
+        result.andExpect(forwardedUrl("/index.html"));
+    }
+
+    @Test
+    public void forwardToIndex_validUrlAndInvalidHeaders_shouldReturnNotAcceptable() throws Exception {
+        // Given
+
+        // When
+        final ResultActions result = mockMvc.perform(get("/")
+                .accept(MimeTypeUtils.APPLICATION_JSON_VALUE));
+
+        // Then
+        result.andExpect(status().isNotAcceptable());
+    }
 }
