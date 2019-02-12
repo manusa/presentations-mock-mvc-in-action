@@ -6,11 +6,13 @@
 package com.marcnuri.demo.mockmvcinaction.web.beer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import java.util.Objects;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.keyvalue.annotation.KeySpace;
+
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import org.springframework.data.annotation.Id;
-import org.springframework.data.keyvalue.annotation.KeySpace;
+import java.time.LocalDateTime;
 
 /**
  * Created by Marc Nuri <marc@marcnuri.com> on 2019-02-09.
@@ -27,6 +29,8 @@ public class Beer {
   private String name;
   @NotNull
   private BeerType type;
+  @LastModifiedDate
+  private LocalDateTime lastModified;
 
   public String getId() {
     return id;
@@ -60,25 +64,36 @@ public class Beer {
     this.type = type;
   }
 
+  public LocalDateTime getLastModified() {
+    return lastModified;
+  }
+
+  public void setLastModified(LocalDateTime lastModified) {
+    this.lastModified = lastModified;
+  }
+
   @Override
   public boolean equals(Object o) {
-    if (this == o) {
-      return true;
-    }
-    if (o == null || getClass() != o.getClass()) {
-      return false;
-    }
+    if (this == o) return true;
+    if (!(o instanceof Beer)) return false;
+
     Beer beer = (Beer) o;
-    return Objects.equals(id, beer.id) &&
-        Objects.equals(externalId, beer.externalId) &&
-        Objects.equals(name, beer.name) &&
-        type == beer.type;
+
+    if (getId() != null ? !getId().equals(beer.getId()) : beer.getId() != null) return false;
+    if (getExternalId() != null ? !getExternalId().equals(beer.getExternalId()) : beer.getExternalId() != null)
+      return false;
+    if (getName() != null ? !getName().equals(beer.getName()) : beer.getName() != null) return false;
+    if (getType() != beer.getType()) return false;
+    return getLastModified() != null ? getLastModified().equals(beer.getLastModified()) : beer.getLastModified() == null;
   }
 
   @Override
   public int hashCode() {
-
-    return Objects.hash(id, externalId, name, type);
+    int result = getId() != null ? getId().hashCode() : 0;
+    result = 31 * result + (getExternalId() != null ? getExternalId().hashCode() : 0);
+    result = 31 * result + (getName() != null ? getName().hashCode() : 0);
+    result = 31 * result + (getType() != null ? getType().hashCode() : 0);
+    result = 31 * result + (getLastModified() != null ? getLastModified().hashCode() : 0);
+    return result;
   }
-
 }
