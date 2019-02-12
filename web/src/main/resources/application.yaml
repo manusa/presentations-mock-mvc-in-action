@@ -1,7 +1,7 @@
 server:
   port: 8081
 
-spring:
-  jackson:
-    serialization:
-      WRITE_DATES_AS_TIMESTAMPS: false
+#spring:
+#  jackson:
+#    serialization:
+#      WRITE_DATES_AS_TIMESTAMPS: true
