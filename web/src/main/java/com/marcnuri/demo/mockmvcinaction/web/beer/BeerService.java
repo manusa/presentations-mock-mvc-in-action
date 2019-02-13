@@ -5,6 +5,7 @@
  */
 package com.marcnuri.demo.mockmvcinaction.web.beer;
 
+import com.marcnuri.demo.mockmvcinaction.web.exception.NotFoundException;
 import java.util.List;
 
 /**
@@ -13,17 +14,39 @@ import java.util.List;
 interface BeerService {
 
   /**
-   * Retrieves a list of registered beers
+   * Retrieves a list of registered {@link Beer}s
    *
    * @return the list of beers
    */
   List<Beer> getBeers();
 
   /**
-   * Registers a new Beer in the system
+   * Gets the {@link Beer} for the provided externalId or throws {@link NotFoundException} if the
+   * beer doesn't exist.
+   *
+   * @param externalId for the Beer to find
+   * @return the Beer found for the provided externalId
+   */
+  Beer getBeer(String externalId);
+
+  /**
+   * Registers a new {@link Beer} in the system
    *
    * @return the newly inserted beer
    */
   Beer insertBeer(Beer beerToInsert);
 
+  /**
+   * Updates an already registered {@link Beer} in the system.
+   *
+   * @param externalId of the registered beer
+   * @param beerToUpdate the beer to update
+   * @return the updated beer
+   */
+  Beer updateBeer(String externalId, Beer beerToUpdate);
+
+  /**
+   * Removes an already registered {@link Beer} with the provided externalId from the system.
+   */
+  void removeBeer(String externalId);
 }

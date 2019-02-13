@@ -11,4 +11,7 @@ import org.springframework.data.repository.CrudRepository;
  * Created by Marc Nuri <marc@marcnuri.com> on 2019-02-09.
  */
 public interface BeerRepository extends CrudRepository<Beer, String> {
+
+  Beer findBeerByExternalId(String externalId);
+
 }
