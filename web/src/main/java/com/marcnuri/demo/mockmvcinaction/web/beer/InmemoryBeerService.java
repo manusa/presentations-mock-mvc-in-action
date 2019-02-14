@@ -62,17 +62,17 @@ public class InmemoryBeerService implements BeerService {
   }
 
   /**
-   * Checks data integrity for the beer to save.
+   * Checks data integrity for the {@link Beer} to save.
    *
-   * <p> Saves a beer and adds audit information.
+   * <p> Saves a Beer and adds audit information.
    *
    * @param beerToSave the beer to save
    * @return the saved beer
    */
   private Beer save(Beer beerToSave) {
-    if (streamAll()
-        .filter(b -> b.getExternalId().equals(beerToSave.getExternalId()))
-        .anyMatch(b-> beerToSave.getId() == null || !b.getId().equals(beerToSave.getId()))) {
+    final Beer registeredBeer = beerRepository.findBeerByExternalId(beerToSave.getExternalId());
+    if (registeredBeer != null
+        && (beerToSave.getId() == null || !registeredBeer.getId().equals(beerToSave.getId()))) {
       throw new NonUniqueException(String.format("Beer with externalId %s already exists", beerToSave.getExternalId()));
     }
     beerToSave.setLastModified(LocalDateTime.now());
