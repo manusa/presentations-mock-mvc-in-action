@@ -15,6 +15,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 
+import com.marcnuri.demo.mockmvcinaction.web.exception.BusinessExceptionControllerAdvice;
+import java.time.LocalDateTime;
 import java.util.Collections;
 import org.junit.After;
 import org.junit.Before;
@@ -36,8 +38,15 @@ public class BeerResourceTest {
   @Before
   public void setUp() {
     mockBeerService = Mockito.mock(BeerService.class);
+
     mockMvc = MockMvcBuilders
         .standaloneSetup(new BeerResource(mockBeerService))
+//        .setMessageConverters(
+//            new MappingJackson2HttpMessageConverter(Jackson2ObjectMapperBuilder.json()
+//                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+//                .modules(new JavaTimeModule()).build()),
+//            new StringHttpMessageConverter())
+        .setControllerAdvice(new BusinessExceptionControllerAdvice())
         .build();
   }
 
@@ -54,6 +63,7 @@ public class BeerResourceTest {
     beer.setId("I'm Invisible");
     beer.setName("La Östia");
     beer.setType(BeerType.KOLSCH);
+    beer.setLastModified(LocalDateTime.of(2015, 10, 21, 7, 28));
     doReturn(Collections.singletonList(beer)).when(mockBeerService).getBeers();
 
     // When

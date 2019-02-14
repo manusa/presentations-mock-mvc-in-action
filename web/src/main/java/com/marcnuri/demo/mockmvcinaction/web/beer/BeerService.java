@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * Created by Marc Nuri <marc@marcnuri.com> on 2019-02-09.
  */
-interface BeerService {
+public interface BeerService {
 
   /**
    * Retrieves a list of registered {@link Beer}s

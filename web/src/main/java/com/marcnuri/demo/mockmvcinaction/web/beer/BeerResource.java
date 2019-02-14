@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,9 +36,8 @@ public class BeerResource {
   }
 
   @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-  @ResponseStatus(HttpStatus.OK)
-  public List<Beer> getBeersAsJson() {
-    return getBeers();
+  public ResponseEntity<List<Beer>> getBeersAsJson() {
+    return ResponseEntity.ok(getBeers());
   }
 
   @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)

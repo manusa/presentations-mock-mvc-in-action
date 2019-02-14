@@ -10,9 +10,10 @@ package com.marcnuri.demo.mockmvcinaction.web.beer;
  */
 public enum BeerType {
   ALE,
+  IPA,
+  KOLSCH,
   LAGER,
-  STROUT,
-  PORTER,
   MALT,
-  KOLSCH
+  PORTER,
+  STROUT
 }
