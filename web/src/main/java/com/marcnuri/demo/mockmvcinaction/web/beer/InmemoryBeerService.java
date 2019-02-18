@@ -14,6 +14,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
@@ -26,6 +27,7 @@ public class InmemoryBeerService implements BeerService {
 
   private final BeerRepository beerRepository;
 
+  @Autowired
   public InmemoryBeerService(BeerRepository beerRepository) {
     this.beerRepository = beerRepository;
   }

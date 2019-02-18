@@ -5,7 +5,6 @@
  */
 package com.marcnuri.demo.mockmvcinaction.web.beer;
 
-import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -36,10 +35,6 @@ public class BeerResourceStrictUnitTest {
 
   @Test
   public void updateBeerAsXML_validBeer_shouldReturnUpdatedBeer(){
-    // Given
-    doAnswer(a -> a.getArgument(1))
-        .when(mockBeerService).updateBeer(Mockito.eq("OST.01"), Mockito.any(Beer.class));
-
     // When
     beerResource.updateBeerAsXML("OST.01", new Beer());
 

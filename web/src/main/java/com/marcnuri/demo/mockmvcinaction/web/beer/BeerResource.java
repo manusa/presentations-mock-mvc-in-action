@@ -41,8 +41,8 @@ public class BeerResource {
   }
 
   @GetMapping(produces = MediaType.APPLICATION_XML_VALUE)
-  public List<Beer> getBeersAsXML() {
-    return getBeers();
+  public ResponseEntity<List<Beer>> getBeersAsXML() {
+    return ResponseEntity.ok(getBeers());
   }
 
   @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)

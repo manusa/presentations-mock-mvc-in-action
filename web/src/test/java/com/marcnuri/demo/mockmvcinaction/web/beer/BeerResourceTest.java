@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.springframework.http.MediaType;
@@ -139,5 +140,51 @@ public class BeerResourceTest {
 
     // Then
     result.andExpect(status().isBadRequest());
+  }
+
+  @Test
+  public void getBeer_existingExternalId_shouldReturnOk() throws Exception {
+    // Given
+    final Beer beer = new Beer();
+    beer.setId("I'm Invisible");
+    beer.setName("Snow");
+    beer.setType(BeerType.LAGER);
+    doReturn(beer).when(mockBeerService).getBeer(Mockito.eq("SNW.01"));
+
+    // When
+    final ResultActions result = mockMvc.perform(
+        get("/beers/SNW.01")
+            .accept(MediaType.APPLICATION_JSON)
+    );
+
+    // Then
+    result.andExpect(status().isOk());
+    result.andExpect(jsonPath("$.id").doesNotExist());
+    result.andExpect(jsonPath("$.name", equalTo("Snow")));
+    result.andExpect(jsonPath("$.type", equalTo("LAGER")));
+  }
+
+  @Test
+  // Corner Case
+  @Ignore
+  public void getBeer_cornerCaseExternalId_shouldReturnOk() throws Exception {
+    // Given
+    final Beer beer = new Beer();
+    beer.setId("I'm Invisible");
+    beer.setName("Amstel");
+    beer.setType(BeerType.LAGER);
+    doReturn(beer).when(mockBeerService).getBeer(Mockito.eq("AMST.1.01"));
+
+    // When
+    final ResultActions result = mockMvc.perform(
+        get("/beers/AMST.1.01")
+            .accept(MediaType.APPLICATION_JSON)
+    );
+
+    // Then
+    result.andExpect(status().isOk());
+    result.andExpect(jsonPath("$.id").doesNotExist());
+    result.andExpect(jsonPath("$.name", equalTo("Amstel")));
+    result.andExpect(jsonPath("$.type", equalTo("LAGER")));
   }
 }
