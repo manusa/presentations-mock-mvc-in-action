@@ -25,7 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
  * Created by Marc Nuri <marc@marcnuri.com> on 2019-02-09.
  */
 @RestController
-@RequestMapping("/beers")
+@RequestMapping(value = "/beers", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 public class BeerResource {
 
   private final BeerService beerService;
@@ -35,7 +35,7 @@ public class BeerResource {
     this.beerService = beerService;
   }
 
-  @GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
+  @GetMapping
   public ResponseEntity<List<Beer>> getBeersAsJson() {
     return ResponseEntity.ok(getBeers());
   }
@@ -68,6 +68,12 @@ public class BeerResource {
     return beerService.updateBeer(externalId, beer);
   }
 
+  @DeleteMapping("/{externalId}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void deleteBeer(@PathVariable("externalId") String externalId) {
+    beerService.removeBeer(externalId);
+  }
+
   // Illustrative example
   @PutMapping(
       path = "/{externalId}",
@@ -80,11 +86,6 @@ public class BeerResource {
     return beerService.updateBeer(externalId, beer);
   }
 
-  @DeleteMapping("/{externalId}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void deleteBeer(@PathVariable("externalId") String externalId) {
-     beerService.removeBeer(externalId);
-  }
 
   private List<Beer> getBeers() {
     return beerService.getBeers();

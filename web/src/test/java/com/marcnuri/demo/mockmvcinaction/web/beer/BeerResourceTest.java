@@ -8,6 +8,7 @@ package com.marcnuri.demo.mockmvcinaction.web.beer;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -16,6 +17,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.xpath;
 
 import com.marcnuri.demo.mockmvcinaction.web.exception.BusinessExceptionControllerAdvice;
+import com.marcnuri.demo.mockmvcinaction.web.exception.NotFoundException;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import org.junit.After;
@@ -42,11 +44,6 @@ public class BeerResourceTest {
 
     mockMvc = MockMvcBuilders
         .standaloneSetup(new BeerResource(mockBeerService))
-//        .setMessageConverters(
-//            new MappingJackson2HttpMessageConverter(Jackson2ObjectMapperBuilder.json()
-//                .featuresToDisable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-//                .modules(new JavaTimeModule()).build()),
-//            new StringHttpMessageConverter())
         .setControllerAdvice(new BusinessExceptionControllerAdvice())
         .build();
   }
@@ -149,11 +146,11 @@ public class BeerResourceTest {
     beer.setId("I'm Invisible");
     beer.setName("Snow");
     beer.setType(BeerType.LAGER);
-    doReturn(beer).when(mockBeerService).getBeer(Mockito.eq("SNW.01"));
+    doReturn(beer).when(mockBeerService).getBeer(Mockito.eq("SNW-01"));
 
     // When
     final ResultActions result = mockMvc.perform(
-        get("/beers/SNW.01")
+        get("/beers/SNW-01")
             .accept(MediaType.APPLICATION_JSON)
     );
 
@@ -165,7 +162,23 @@ public class BeerResourceTest {
   }
 
   @Test
-  // Corner Case
+  public void getBeer_nonExistingExternalId_shouldReturnNotFound() throws Exception {
+    // Given
+    doThrow(new NotFoundException("Beer not found")).when(mockBeerService).getBeer(Mockito.eq("SNW-01"));
+
+    // When
+    final ResultActions result = mockMvc.perform(
+        get("/beers/SNW-01")
+            .accept(MediaType.APPLICATION_JSON)
+    );
+
+    // Then
+    result.andExpect(status().isNotFound());
+    result.andExpect(content().string("Beer not found"));
+  }
+
+  @Test
+  // Corner Case - Use regex or configuration
   @Ignore
   public void getBeer_cornerCaseExternalId_shouldReturnOk() throws Exception {
     // Given
@@ -187,4 +200,5 @@ public class BeerResourceTest {
     result.andExpect(jsonPath("$.name", equalTo("Amstel")));
     result.andExpect(jsonPath("$.type", equalTo("LAGER")));
   }
+
 }
