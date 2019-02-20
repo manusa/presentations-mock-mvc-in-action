@@ -1,8 +1,7 @@
 # MockMVC in Action!
 
 Source code to back the presentation / workshop where I highlight the advantages of using
-MockMVC testing framework in order to test Spring implementados endpoints.
-
+MockMVC testing framework in order to test Spring endpoints.
 
 MockMVC is one of the main pieces for the development of Spring MVC "integration" tests
 within the Spring testing framework package.
@@ -35,13 +34,3 @@ unitarios tradicionales y más estrictos.
 
 La presentación será eminentemente práctica y se mostrarán mucho código fuente con los
 diferentes ejemplos.
-
-
-# TODO:
-https://docs.spring.io/spring/docs/current/spring-framework-reference/web-reactive.html
-https://www.baeldung.com/spring-webflux
-https://www.baeldung.com/spring-5-functional-web
-https://github.com/eugenp/tutorials/tree/master/spring-5-reactive-security/src/main/java/com/baeldung/webflux
-https://dzone.com/articles/spring-webflux-getting-started
-https://www.javaworld.com/article/3288219/spring-framework/mastering-spring-framework-5-part-2-spring-webflux.html?page=3
-https://docs.spring.io/spring/docs/current/spring-framework-reference/testing.html
