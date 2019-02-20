@@ -1,7 +1,7 @@
 /*
- * RandomNumberRouterTest.java
+ * RandomNumberResourceWebTestClientTest.java
  *
- * Created on 2019-02-19, 21:46
+ * Created on 2019-02-20, 10:49
  */
 package com.marcnuri.demo.mockmvcinaction.webflux.random;
 
@@ -18,9 +18,9 @@ import reactor.core.publisher.Flux;
 import reactor.test.StepVerifier;
 
 /**
- * Created by Marc Nuri <marc@marcnuri.com> on 2019-02-19.
+ * Created by Marc Nuri <marc@marcnuri.com> on 2019-02-20.
  */
-public class RandomNumberRouterTest {
+public class RandomNumberResourceWebTestClientTest {
 
   private RandomNumberService mockRandomNumberService;
   private WebTestClient webTestClient;
@@ -30,7 +30,7 @@ public class RandomNumberRouterTest {
     mockRandomNumberService = Mockito.mock(RandomNumberService.class);
 
     webTestClient = WebTestClient
-        .bindToRouterFunction(RandomNumberRouter.randomNumberRouters(mockRandomNumberService))
+        .bindToController(new RandomNumberResource(mockRandomNumberService))
         .configureClient()
         .build();
   }
@@ -40,8 +40,9 @@ public class RandomNumberRouterTest {
     webTestClient = null;
   }
 
+
   @Test
-  public void randomNumberRouters_validRequest_shouldReturnOk() {
+  public void getRandomNumbers_shouldReturnOk() throws Exception {
     // Given
     doReturn(
         Flux.just(1337D, 313373D)
@@ -49,7 +50,7 @@ public class RandomNumberRouterTest {
 
     // When
     final ResponseSpec result = webTestClient.get()
-        .uri("/functional/random")
+        .uri("/random")
         .accept(TEXT_EVENT_STREAM)
         .exchange();
 
@@ -61,5 +62,4 @@ public class RandomNumberRouterTest {
         .expectNext(1337D, 313373D)
         .verifyComplete();
   }
-
 }

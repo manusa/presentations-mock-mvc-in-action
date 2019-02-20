@@ -45,7 +45,7 @@ public class RandomNumberResourceTest {
   }
 
   @Test
-  public void getRandomNumbers() throws Exception {
+  public void getRandomNumbers_shouldReturnOk() throws Exception {
     // Given
     doReturn(
         Flux.interval(Duration.ofMillis(100))
