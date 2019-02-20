@@ -161,6 +161,7 @@ public class BeerResourceTest {
 
     // Then
     result.andExpect(status().isOk());
+    result.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     result.andExpect(jsonPath("$.id").doesNotExist());
     result.andExpect(jsonPath("$.name", equalTo("Snow")));
     result.andExpect(jsonPath("$.type", equalTo("LAGER")));
@@ -202,6 +203,7 @@ public class BeerResourceTest {
 
     // Then
     result.andExpect(status().isOk());
+    result.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     result.andExpect(jsonPath("$.id").doesNotExist());
     result.andExpect(jsonPath("$.name", equalTo("Amstel")));
     result.andExpect(jsonPath("$.type", equalTo("LAGER")));
@@ -239,6 +241,7 @@ public class BeerResourceTest {
 
     // Then
     result.andExpect(status().isNoContent());
+    result.andExpect(content().string(""));
     verify(mockBeerService, times(1))
         .removeBeer(Mockito.eq("OST-1"));
   }
