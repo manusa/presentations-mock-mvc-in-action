@@ -9,8 +9,12 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -110,7 +114,7 @@ public class BeerResourceTest {
     final ResultActions result = mockMvc.perform(
         post("/beers")
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"name\":\"Östia\",\"externalId\":\"OST.1\",\"type\":\"KOLSCH\"}")
+            .content("{\"name\":\"Östia\",\"externalId\":\"OST-1\",\"type\":\"KOLSCH\"}")
             .accept(MediaType.APPLICATION_JSON)
     );
 
@@ -119,7 +123,7 @@ public class BeerResourceTest {
     result.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
     result.andExpect(jsonPath("$.id").doesNotExist());
     result.andExpect(jsonPath("$.name", equalTo("Östia")));
-    result.andExpect(jsonPath("$.externalId", equalTo("OST.1")));
+    result.andExpect(jsonPath("$.externalId", equalTo("OST-1")));
     result.andExpect(jsonPath("$.type", equalTo("KOLSCH")));
   }
 
@@ -131,7 +135,7 @@ public class BeerResourceTest {
     final ResultActions result = mockMvc.perform(
         post("/beers")
             .contentType(MediaType.APPLICATION_JSON)
-            .content("{\"name\":\"Östia\",\"externalId\":\"OST.1\"}")
+            .content("{\"name\":\"Östia\",\"externalId\":\"OST-1\"}")
             .accept(MediaType.APPLICATION_JSON)
     );
 
@@ -201,4 +205,62 @@ public class BeerResourceTest {
     result.andExpect(jsonPath("$.type", equalTo("LAGER")));
   }
 
+  @Test
+  public void updateBeer_validBeer_shouldReturnOk() throws Exception {
+    // Given
+    doAnswer(a -> a.getArgument(1))
+        .when(mockBeerService).updateBeer(Mockito.eq("OST-1"), Mockito.any(Beer.class));
+
+    // When
+    final ResultActions result = mockMvc.perform(
+        put("/beers/OST-1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .content("{\"name\":\"Östia\",\"externalId\":\"OST-1\",\"type\":\"KOLSCH\"}")
+            .accept(MediaType.APPLICATION_JSON)
+    );
+
+    // Then
+    result.andExpect(status().isOk());
+    result.andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8));
+    result.andExpect(jsonPath("$.id").doesNotExist());
+    result.andExpect(jsonPath("$.name", equalTo("Östia")));
+    result.andExpect(jsonPath("$.externalId", equalTo("OST-1")));
+    result.andExpect(jsonPath("$.type", equalTo("KOLSCH")));
+  }
+
+  @Test
+  public void deleteBeer_validBeer_shouldReturnNoContent() throws Exception {
+    // When
+    final ResultActions result = mockMvc.perform(
+        delete("/beers/OST-1")
+    );
+
+    // Then
+    result.andExpect(status().isNoContent());
+    verify(mockBeerService, times(1))
+        .removeBeer(Mockito.eq("OST-1"));
+  }
+
+  @Test
+  public void updateBeerAsXml_validBeer_shouldReturnOk() throws Exception {
+    // Given
+    doAnswer(a -> a.getArgument(1))
+        .when(mockBeerService).updateBeer(Mockito.eq("OST-1"), Mockito.any(Beer.class));
+
+    // When
+    final ResultActions result = mockMvc.perform(
+        put("/beers/OST-1")
+            .contentType(MediaType.APPLICATION_JSON)
+            .header("Special-Header", "XML Babel")
+            .content("{\"name\":\"Östia\",\"externalId\":\"OST-1\",\"type\":\"KOLSCH\"}")
+            .accept(MediaType.APPLICATION_XML_VALUE)
+    );
+
+    // Then
+    result.andExpect(status().isOk());
+    result.andExpect(content().contentType(MediaType.valueOf("application/xml;charset=UTF-8")));
+    result.andExpect(xpath("/Beer/name").string(equalTo("Östia")));
+    result.andExpect(xpath("/Beer/externalId").string(equalTo("OST-1")));
+    result.andExpect(xpath("/Beer/type").string(equalTo("KOLSCH")));
+  }
 }
