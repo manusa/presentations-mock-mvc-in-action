@@ -6,13 +6,12 @@
 package com.marcnuri.demo.mockmvcinaction.web.beer;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import java.time.LocalDateTime;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.keyvalue.annotation.KeySpace;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.time.LocalDateTime;
 
 /**
  * Created by Marc Nuri <marc@marcnuri.com> on 2019-02-09.
