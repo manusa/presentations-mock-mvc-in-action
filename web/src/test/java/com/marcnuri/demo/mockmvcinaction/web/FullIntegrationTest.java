@@ -16,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.Collections;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,7 @@ public class FullIntegrationTest {
 
     @Test
     @SuppressWarnings("ConstantConditions")
+    @Ignore
     public void forwardToIndex_validUrlAndHeaders_shouldReturnOkAndRedirectToContent() throws Exception {
         // Given
         // Real application context
