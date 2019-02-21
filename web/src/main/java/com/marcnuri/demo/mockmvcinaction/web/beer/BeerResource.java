@@ -47,7 +47,7 @@ public class BeerResource {
 
   @PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @ResponseStatus(HttpStatus.CREATED)
-  public Beer insertBeer(@Validated  @RequestBody Beer beer) {
+  public Beer insertBeer(@Validated @RequestBody Beer beer) {
     return beerService.insertBeer(beer);
   }
 
@@ -63,7 +63,7 @@ public class BeerResource {
       consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
   @ResponseStatus(HttpStatus.OK)
   public Beer updateBeer(
-      @PathVariable("externalId") String externalId, @Validated  @RequestBody Beer beer) {
+      @PathVariable("externalId") String externalId, @Validated @RequestBody Beer beer) {
 
     return beerService.updateBeer(externalId, beer);
   }
