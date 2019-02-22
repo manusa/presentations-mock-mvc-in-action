@@ -32,5 +32,5 @@ También se presentarán diferentes casos de uso y tipos de endpoints o controla
 que se pueden probar con la herramienta y cuáles son sus ventajas respecto a los tests
 unitarios tradicionales y más estrictos.
 
-La presentación será eminentemente práctica y se mostrarán mucho código fuente con los
+La presentación será eminentemente práctica y se mostrará mucho código fuente con los
 diferentes ejemplos.
